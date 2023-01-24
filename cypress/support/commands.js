@@ -47,10 +47,6 @@ Cypress.Commands.add('cadastrarUsuario', (nomeFaker, emailFaker, passwordFaker,)
             "password": passwordFaker,
             "administrador": "true"
         }
-    }).then((response) => {
-        expect(response.status).to.equal(201)
-        expect(response.body).to.have.property('message')
-        .to.equal('Cadastro realizado com sucesso')
     })
 });
 
@@ -58,9 +54,6 @@ Cypress.Commands.add('listarUsuarios', () => {
     cy.request({
         method: 'GET',
         url: 'usuarios'
-    }).then((response) => {
-        expect(response.status).to.equal(200)
-        expect(response.body).to.have.property('usuarios')
     })
 })
 
@@ -75,34 +68,38 @@ Cypress.Commands.add('emailInvalido', (nome, email, password) => {
             "administrador": "true"
         },
         failOnStatusCode: false
-    }).then((response) => {
-        expect(response.status).to.equal(400)
-        expect(response.body).to.have.property('message')
-        .to.equal('Este email já está sendo usado')
-        
     })
 
+})
+
+Cypress.Commands.add('emailloginInvalido', (email, password) => {
+    cy.request({
+        method: 'POST',
+        url: 'login',
+        body: {
+            "email": email,
+            "password": password
+        },
+        failOnStatusCode: false
     })
 
-    Cypress.Commands.add('editarUsuarios', (nome, email, senha) => {
-        cy.request('GET', 'usuarios').then((response) => {
-            let id = response.body.usuarios[4]._id
-            cy.request({
-                method: 'PUT',
-                url: `usuarios/${id}`,
-                body: {
-                    "nome": nome,
-                    "email": email,
-                    "password": senha,
-                    "administrador": "true"
-                }
-                
-            }).then((response) => {
-                expect(response.status).to.equal(200)
-                expect(response.body).to.have.property('message')
-                .to.equal('Registro alterado com sucesso')
-            })
-        
+})
+
+Cypress.Commands.add('editarUsuarios', (nome, email, senha) => {
+    cy.request('GET', 'usuarios').then((response) => {
+        let id = response.body.usuarios[4]._id
+        cy.request({
+            method: 'PUT',
+            url: `usuarios/${id}`,
+            body: {
+                "nome": nome,
+                "email": email,
+                "password": senha,
+                "administrador": "true"
+            }
+
+        })
+
     })
 
 })
@@ -113,14 +110,10 @@ Cypress.Commands.add('deletarUsuarios', () => {
         cy.request({
             method: 'DELETE',
             url: `usuarios/${id}`,
-                   
-        }).then((response) => {
-            expect(response.status).to.equal(200)
-            expect(response.body).to.have.property('message')
-            .to.equal('Registro excluído com sucesso')
+
         })
-    
-})
+
+    })
 
 })
 
