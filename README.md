@@ -1,3 +1,17 @@
+Testes de Api e contrato utilizando as ferramentas Cypress e Jenkins.
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Testes API - EBAC
 ### Exercício para os alunos de Qualidade de software da EBAC 
 
